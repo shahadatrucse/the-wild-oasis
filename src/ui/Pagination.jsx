@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import { HiChevronLeft } from "react-icons/hi";
+import { HiChevronRight } from "react-icons/hi2";
+import { useSearchParams } from "react-router-dom";
+import { PAGE_SIZE } from "../utils/constants";
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -55,3 +59,55 @@ const PaginationButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
+
+function Pagination({ count }) {
+  const [searchParams, setSeacrchParams] = useSearchParams();
+  const currentPage = !searchParams.get("page")
+    ? 1
+    : Number(searchParams.get("page"));
+
+  console.log("current: ", currentPage);
+  const pageCount = Math.ceil(count / PAGE_SIZE);
+  console.log("page: ", pageCount);
+  function nextPage() {
+    const next = currentPage === pageCount ? currentPage : currentPage + 1;
+    searchParams.set("page", next);
+    setSeacrchParams(searchParams);
+  }
+  function prevPage() {
+    const prev = currentPage === 1 ? currentPage : currentPage - 1;
+    searchParams.set("page", prev);
+    setSeacrchParams(searchParams);
+  }
+  console.log("current2: ", currentPage);
+  if (pageCount <= 1) return null;
+  return (
+    <StyledPagination>
+      <p>
+        Showing{" "}
+        <span style={{ fontWeight: 600 }}>
+          {(currentPage - 1) * PAGE_SIZE + 1}
+        </span>{" "}
+        to{" "}
+        <span style={{ fontWeight: 600 }}>
+          {currentPage === pageCount ? count : PAGE_SIZE * currentPage}
+        </span>{" "}
+        of <span style={{ fontWeight: 600 }}>{count}</span> results
+      </p>
+      <Buttons>
+        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+          <HiChevronLeft /> <span> Previous</span>
+        </PaginationButton>
+        <PaginationButton
+          onClick={nextPage}
+          disabled={currentPage === pageCount}
+        >
+          <span>Next</span>
+          <HiChevronRight />
+        </PaginationButton>
+      </Buttons>
+    </StyledPagination>
+  );
+}
+
+export default Pagination;

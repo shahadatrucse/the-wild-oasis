@@ -1,11 +1,25 @@
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
-
 import Tag from "../../ui/Tag";
-import Table from "../../ui/Table";
-
+import Menus from "../../ui/Menus";
+import Modal from "../../ui/Modal";
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
+import Table from "../../ui/Table";
+import { HiEye } from "react-icons/hi2";
+
+// v1
+// const TableRow = styled.div`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+//   column-gap: 2.4rem;
+//   align-items: center;
+//   padding: 1.4rem 2.4rem;
+
+//   &:not(:last-child) {
+//     border-bottom: 1px solid var(--color-grey-100);
+//   }
+// `;
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -55,7 +69,7 @@ function BookingRow({
   };
 
   return (
-    <Table.Row>
+    <Table.Row role="row">
       <Cabin>{cabinName}</Cabin>
 
       <Stacked>
